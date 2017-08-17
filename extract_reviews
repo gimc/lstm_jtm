@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const readline = require('readline');
+const eol = require('os').EOL;
+
+const output = fs.createWriteStream('review_text.txt');
+
+const rl = readline.createInterface({
+  input: fs.createReadStream('reviews_Movies_and_TV_5.json')
+});
+
+
+var lineNum = 1;
+var maxLines = 100;
+rl.on('line', function (line) {
+  console.log(`Parsing line ${lineNum} of 1697533`);
+  output.write(JSON.parse(line).reviewText);
+  lineNum++;
+  if (lineNum == maxLines) rl.close();
+}).on('close', () => {
+  output.close();
+});
